@@ -1,0 +1,83 @@
+  /* Default Light Mode */
+  body {
+    background-color: #f8f9fa;
+    color: #000;
+  }
+
+  .navbar {
+    background-color: #343a40;
+  }
+
+  /* Dark Mode Styles */
+  body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+
+  .dark-mode .navbar {
+    background-color: #212529;
+  }
+
+  .dark-mode .btn-outline-success {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  .dark-mode .btn-outline-success:hover {
+    background-color: #ffffff;
+    color: #212529;
+  }
+
+  .toggle-switch {
+    cursor: pointer;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    background-color: #ddd;
+    border-radius: 22px;
+    position: relative;
+  }
+
+  .toggle-switch::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+  }
+
+  .dark-mode .toggle-switch::before {
+    transform: translateX(18px);
+    background-color: #212529;
+  }
+
+  .card-body{
+    background: linear-gradient(45deg, #9669b6ad, #af69c1, rgb(205, 106, 142), #457386);
+  }
+
+  .form-control{
+    background: linear-gradient(45deg, #e2dee5ad, #ded6df)
+  }
+
+  body {
+    background: linear-gradient(45deg, #2e2d2e, #bf8879, rgb(238, 206, 26), #ef7857);
+    background-size: 400% 400%;
+    animation: gradientBackground 10s ease infinite;
+    color: #000;
+  }
+
+  @keyframes gradientBackground {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }

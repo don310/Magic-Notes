@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - Magic Notes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Magic Notes</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container my-4">
+    <h2>Contact Us</h2>
+    <form id="contactForm">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" required />
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" required />
+      </div>
+      <div class="mb-3">
+        <label for="message" class="form-label">Message</label>
+        <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+  </div>
+
+  <!-- IndexedDB Script to handle contact form data -->
+  <script>
+    let db;
+
+    // Open or create the IndexedDB database
+    window.onload = function() {
+      let request = indexedDB.open("contactFormDB", 1);
+
+      // If the database is being created or upgraded
+      request.onupgradeneeded = function(event) {
+        db = event.target.result;
+        let objectStore = db.createObjectStore("contacts", { keyPath: "id", autoIncrement: true });
+        objectStore.createIndex("name", "name", { unique: false });
+        objectStore.createIndex("email", "email", { unique: false });
+        objectStore.createIndex("message", "message", { unique: false });
+        console.log("Database setup complete");
+      };
+
+      request.onsuccess = function(event) {
+        db = event.target.result;
+        console.log("Database opened successfully");
+      };
+
+      request.onerror = function(event) {
+        console.log("Error opening database", event);
+      };
+    };
+
+    // Handling form submission
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+      event.preventDefault();  // Prevent form from submitting normally
+
+      let name = document.getElementById("name").value;
+      let email = document.getElementById("email").value;
+      let message = document.getElementById("message").value;
+
+      let transaction = db.transaction(["contacts"], "readwrite");
+      let objectStore = transaction.objectStore("contacts");
+      let request = objectStore.add({
+        name: name,
+        email: email,
+        message: message
+      });
+
+      request.onsuccess = function() {
+        console.log("Contact saved");
+        // Clear form after submission
+        document.getElementById("contactForm").reset();
+        alert("Thank you for your message!");
+      };
+
+      request.onerror = function() {
+        console.log("Error saving contact");
+      };
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
